@@ -1,6 +1,7 @@
 // (C) 2017-2018 All Rights Reserved Laurent Demailly.
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/resource.h>
 #include <time.h>
 
@@ -22,6 +23,7 @@ struct rusage usage;
 void startUsage() {
     if (getrusage(RUSAGE_SELF, &usage)) {
         perror("getrusage");
+        exit(1);
     }
 }
 
@@ -29,12 +31,12 @@ void endUsage(struct rusage *delta) {
     struct rusage tempu;
     if (getrusage(RUSAGE_SELF, &tempu)) {
         perror("getrusage");
+        exit(1);
     }
     long *ptrNew = (long *)&tempu;
     long *ptrPrv = (long *)&usage;
     long *ptrRes = (long *)delta;
     // substract all fields as long
-    int i = 0;
     for (int i = 0;
          ((char *)ptrNew) <= ((char *)&tempu) + sizeof(tempu) - sizeof(long);
          i++) {
