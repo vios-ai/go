@@ -49,7 +49,7 @@ void endUsage(struct rusage *delta) {
          ((char *)ptrNew) <= ((char *)&tempu) + sizeof(tempu) - sizeof(long);
          i++) {
         long diff = (*ptrNew) - (*ptrPrv);
-        printf("%d: %ld\n", i, diff);
+        printf("%d: now %ld delta -> %ld\n", i, *ptrNew, diff);
         *(ptrRes++) = diff;
         *(ptrPrv++) = *(ptrNew++);
     }
