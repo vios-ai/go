@@ -5,6 +5,7 @@
 #include <sys/resource.h>
 #include <time.h>
 
+// -- clock() way
 clock_t t;
 
 void startTimer() {
@@ -17,6 +18,13 @@ clock_t endTimer() {
     t = n;
     return elapsed;
 }
+
+void printTimer(char *msg, clock_t v) {
+    printf("%s: %lu clicks (%f us)\n", msg, v,
+           1000000. * ((double)v) / CLOCKS_PER_SEC);
+}
+
+// -- rusage way
 
 struct rusage usage;
 
@@ -47,10 +55,13 @@ void endUsage(struct rusage *delta) {
     }
 }
 
-void printTimer(char *msg, clock_t v) {
-    printf("%s: %lu clicks (%f us)\n", msg, v,
-           1000000. * ((double)v) / CLOCKS_PER_SEC);
-}
+// TODO: printUsage()
+
+// -- http://man7.org/linux/man-pages/man2/clock_gettime.2.html way
+
+// To Be implemented
+
+// -- main/ test
 
 int main() {
     printf("timeval sz = %lu - %lu\n", sizeof(struct timeval), sizeof(long));
@@ -60,7 +71,8 @@ int main() {
     v = endTimer();
     printTimer("no op", v);
     startUsage();
+    void *a = calloc(1024, 1);
     endUsage(&delta);
-    printf("end - clocks per sec %d\n", CLOCKS_PER_SEC);
+    printf("end - clocks per sec %d, allocated %p\n", CLOCKS_PER_SEC, a);
     return 0;
 }
