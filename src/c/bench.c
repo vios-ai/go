@@ -37,7 +37,8 @@ void printClock(char *msg, long n, const struct timespec *v) {
     double usec = clockToUsec(v);
     usec /= (double)n;
     // 10th of nanosec max resolution
-    printf("%s:\t%ld\t %.04f usec/op\n", msg, n, usec);
+    printf("%s:\t%ld\t %.04f usec/op\t(%.3fs total)\n", msg, n, usec,
+           n * usec / 1e6);
 }
 
 #define INITIAL_N 1000
@@ -50,13 +51,14 @@ void run(void (*f)(void *), void *ctx, char *msg) {
     endClock(&delta);
     double usec = clockToUsec(&delta);
     printClock(msg, INITIAL_N, &delta);
-    if (delta.tv_sec >= 1) {
+    if (delta.tv_sec >= 2) {
+        // took long enough for the short run, end here
         return;
     }
-    double iters = 5e6 / usec * INITIAL_N;  // target to take about 5s
+    double iters = 3e6 / usec * INITIAL_N;  // target to take about 3s
     double power = pow(10, floor(log10(iters)));
-    long n = (long)(power * round(iters / power));
-    LOG(DEBUG, printf("DBG 5s run would take %g iters -> %ld (p=%g)\n", iters,
+    long n = (long)(power * ceil(iters / power));
+    LOG(DEBUG, printf("DBG 3s run would take %g iters -> %ld (p=%g)\n", iters,
                       n, power))
     startClock();
     for (int i = 0; i < n; ++i) {

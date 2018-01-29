@@ -16,7 +16,7 @@ void to_measure(void *ctx) {
     }
 }
 
-#define ITERS 1000000000  // 1B times
+#define ITERS (1000000000 / N)
 
 int main() {
     double j = 0;
