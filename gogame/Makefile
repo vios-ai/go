@@ -1,8 +1,8 @@
-gogame: gogame.c
-	cc -Wall -O3  gogame.c   -o gogame
+gogame: gogame.c Makefile
+	cc -Wall -O3 gogame.c   -o gogame
 
 fmt:
 	clang-format -i gogame.c
 
 test: gogame
-	./gogame
+	bash -c "time ./gogame"
