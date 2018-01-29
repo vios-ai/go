@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+LogLevels _logLvl = DEBUG;
+
 // file local
 struct timespec timer;
 
@@ -34,23 +36,28 @@ double clockToUsec(const struct timespec *v) {
 void printClock(char *msg, long n, const struct timespec *v) {
     double usec = clockToUsec(v);
     usec /= (double)n;
-    printf("%s:\t%ld\t %.03f usec/op\n", msg, n, usec);
+    // 10th of nanosec max resolution
+    printf("%s:\t%ld\t %.04f usec/op\n", msg, n, usec);
 }
 
+#define INITIAL_N 1000
 void run(void (*f)(void *), void *ctx, char *msg) {
     struct timespec delta;
     startClock();
-    (*f)(ctx);
+    for (int i = 0; i < INITIAL_N; ++i) {
+        (*f)(ctx);
+    }
     endClock(&delta);
     double usec = clockToUsec(&delta);
-    printClock(msg, 1, &delta);
-    if (delta.tv_sec >= 5) {
+    printClock(msg, INITIAL_N, &delta);
+    if (delta.tv_sec >= 1) {
         return;
     }
-    double iters = 5e6 / usec;  // target to take about 5s
+    double iters = 5e6 / usec * INITIAL_N;  // target to take about 5s
     double power = pow(10, floor(log10(iters)));
     long n = (long)(power * round(iters / power));
-    printf("%g -> %ld (%g)\n", iters, n, power);
+    LOG(DEBUG, printf("DBG 5s run would take %g iters -> %ld (p=%g)\n", iters,
+                      n, power))
     startClock();
     for (int i = 0; i < n; ++i) {
         (*f)(ctx);

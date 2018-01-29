@@ -6,28 +6,29 @@
 
 // -- main/ test
 
-#define N 50000
+#define N 5
 
-double j;
-
-void to_measure() {
+void to_measure(void *ctx) {
+    double *jptr = (double *)ctx;
     long i;
-    for (i = 0, j = 0; i < N; i++) {
-        j += i;
+    for (i = 0; i < N; i++) {
+        *jptr += i;
     }
 }
 
+#define ITERS 1000000000  // 1B times
+
 int main() {
-    j = 0;
-    run(to_measure, NULL, "1 iter");
-    int i;
+    double j = 0;
+    run(to_measure, &j, "to_measure");
+    long i;
     struct timespec delta;
     startClock();
-    for (i = 0, j = 0; i < N; i++) {
-        to_measure();
+    for (i = 0, j = 0; i < ITERS; ++i) {
+        to_measure(&j);
     }
     endClock(&delta);
-    printf("j=%f - ", j);  // so the loop doesn't get optimized away
-    printClock("loop", N, &delta);
+    LOG(INFO, printf("INF j=%g\n", j))
+    printClock("loop", ITERS, &delta);
     return 0;
 }

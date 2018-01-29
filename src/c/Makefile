@@ -1,11 +1,11 @@
 
-all: test
+all: main_test_test
 
 BENCH := bench.o
 
-CC:=cc -Wall -O3
+CC:=cc -Wall -g -O3
 
-%.o: %.c
+%.o: %.c Makefile
 	$(CC) -o $@ -c $<
 
 main_test: main_test.c $(BENCH)
@@ -17,8 +17,11 @@ timing_experiment: timing_experiment.c Makefile
 fmt:
 	clang-format -i *.h *.c
 
-test: main_test timing_experiment
+main_test_test: main_test
+	bash -c "time ./main_test"
+
+all_tests: main_test timing_experiment
 	bash -c "time ./timing_experiment"
 	bash -c "time ./main_test"
 
-.PHONY: all test fmt
+.PHONY: all all_tests main_test_test fmt

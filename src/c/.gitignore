@@ -1,3 +1,4 @@
 timing_experiment
 main_test
 *.o
+*.dSYM
