@@ -52,8 +52,8 @@ void run(void (*f)(void *), void *ctx, char *msg) {
     long n = (long)(power * round(iters / power));
     printf("%g -> %ld (%g)\n", iters, n, power);
     startClock();
-    for (int i = 0; i<n; ++i ){
-      (*f)(ctx);
+    for (int i = 0; i < n; ++i) {
+        (*f)(ctx);
     }
     endClock(&delta);
     printClock(msg, n, &delta);
