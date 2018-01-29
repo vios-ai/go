@@ -1,8 +1,8 @@
-gogame: gogame.c Makefile
-	cc -Wall -O3 gogame.c   -o gogame
+timing_experiment: timing_experiment.c Makefile
+	cc -Wall -O3 timing_experiment.c -o $@
 
 fmt:
-	clang-format -i gogame.c
+	clang-format -i timing_experiment.c
 
-test: gogame
-	bash -c "time ./gogame"
+test: timing_experiment
+	bash -c "time ./timing_experiment"
