@@ -12,6 +12,11 @@ func TestGoBoard1(t *testing.T) {
 	fmt.Printf("board %d %+v", len(src.board), src)
 }
 
+func BenchmarkNoop(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+	}
+}
+
 func BenchmarkCopy19(b *testing.B) {
 	src := NewGoBoard(19)
 	for n := 0; n < b.N; n++ {

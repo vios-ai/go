@@ -1,5 +1,5 @@
 
-all: main_test_test
+all: go_test
 
 BENCH := bench.o
 
@@ -11,11 +11,17 @@ CC:=cc -Wall -g -O3
 main_test: main_test.c $(BENCH)
 	$(CC) -o $@ $< $(BENCH)
 
+gogame: gogame.c  $(BENCH)
+	$(CC) -o $@ $< $(BENCH)
+
 timing_experiment: timing_experiment.c Makefile
 	cc -Wall -O3 timing_experiment.c -o $@
 
 fmt:
 	clang-format -i *.h *.c
+
+go_test: gogame
+		bash -c "time ./gogame"
 
 main_test_test: main_test
 	bash -c "time ./main_test"

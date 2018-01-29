@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-LogLevels _logLvl = DEBUG;
+LogLevels _logLvl = INFO;
 
 // file local
 struct timespec timer;
@@ -49,12 +49,13 @@ void run(void (*f)(void *), void *ctx, char *msg) {
         (*f)(ctx);
     }
     endClock(&delta);
-    double usec = clockToUsec(&delta);
-    printClock(msg, INITIAL_N, &delta);
     if (delta.tv_sec >= 2) {
         // took long enough for the short run, end here
+        printClock(msg, INITIAL_N, &delta);
         return;
     }
+    LOG(VERBOSE, printClock(msg, INITIAL_N, &delta))
+    double usec = clockToUsec(&delta);
     double iters = 3e6 / usec * INITIAL_N;  // target to take about 3s
     double power = pow(10, floor(log10(iters)));
     long n = (long)(power * ceil(iters / power));
