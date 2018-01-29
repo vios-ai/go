@@ -11,11 +11,11 @@
 clock_t t;
 
 void startTimer() {
-    t = CLOCK_ID();
+    t = clock();
 }
 
 clock_t endTimer() {
-    clock_t n = CLOCK_ID();
+    clock_t n = clock();
     clock_t elapsed = n - t;
     t = n;
     return elapsed;
