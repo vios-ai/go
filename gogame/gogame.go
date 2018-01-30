@@ -20,7 +20,9 @@ func NewGoBoard(sz int) GoBoard {
 
 // Copy1 clones the board.
 func (g *GoBoard) Copy1(src GoBoard) {
-	g.n = src.n
-	g.board = make([]int16, len(src.board))
+	if g.n != src.n {
+		g.n = src.n
+		g.board = make([]int16, len(src.board))
+	}
 	copy(g.board, src.board)
 }

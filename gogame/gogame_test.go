@@ -19,24 +19,24 @@ func BenchmarkNoop(b *testing.B) {
 
 func BenchmarkCopy19(b *testing.B) {
 	src := NewGoBoard(19)
+	dst := GoBoard{}
 	for n := 0; n < b.N; n++ {
-		dst := GoBoard{}
 		dst.Copy1(src)
 	}
 }
 
 func BenchmarkCopy13(b *testing.B) {
 	src := NewGoBoard(13)
+	dst := GoBoard{}
 	for n := 0; n < b.N; n++ {
-		dst := GoBoard{}
 		dst.Copy1(src)
 	}
 }
 
 func BenchmarkCopy9(b *testing.B) {
 	src := NewGoBoard(9)
+	dst := GoBoard{}
 	for n := 0; n < b.N; n++ {
-		dst := GoBoard{}
 		dst.Copy1(src)
 	}
 }

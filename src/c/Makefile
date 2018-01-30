@@ -3,7 +3,7 @@ all: go_test
 
 BENCH := bench.o
 
-CC:=cc -Wall -g -O3
+CC:=cc -Wall -O3
 
 %.o: %.c Makefile
 	$(CC) -o $@ -c $<
@@ -30,4 +30,7 @@ all_tests: main_test timing_experiment
 	bash -c "time ./timing_experiment"
 	bash -c "time ./main_test"
 
-.PHONY: all all_tests main_test_test fmt
+clean:
+	$(RM) -f *.o gogame timing_experiment main_test
+
+.PHONY: all all_tests main_test_test fmt clean
