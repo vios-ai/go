@@ -40,3 +40,13 @@ func BenchmarkCopy9(b *testing.B) {
 		dst.Copy1(src)
 	}
 }
+
+func BenchmarkCopyAlternate(b *testing.B) {
+	src1 := NewGoBoard(19)
+	src2 := NewGoBoard(13)
+	dst := GoBoard{}
+	for n := 0; n < b.N; n++ {
+		dst.Copy1(src1)
+		dst.Copy1(src2)
+	}
+}

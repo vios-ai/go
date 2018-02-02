@@ -51,6 +51,11 @@ void test9(void *ctx) {
     Copy1(ctx, b9);
 }
 
+void testAlternate(void *ctx) {
+  Copy1(ctx, b19);
+  Copy1(ctx, b13);
+}
+
 void noop(void *ctx) {
     return;
 }
@@ -64,5 +69,6 @@ int main() {
     run(test19, &dst, "19 board, Copy1");
     run(test13, &dst, "13 board, Copy1");
     run(test9, &dst, "9 board, Copy1");
+    run(testAlternate, &dst, "both 19/13 alternating, Copy1");
     return 0;
 }
